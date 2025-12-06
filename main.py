@@ -3,6 +3,13 @@ MatrixRoute - Ana Program
 Tüm modülleri entegre eden main dosyası
 """
 
+import sys
+import io
+
+# Windows console encoding fix
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+
 from pathfinder import PathFinder
 
 # Ekip arkadaşlarınızın modüllerini import edin

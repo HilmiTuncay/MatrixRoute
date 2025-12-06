@@ -1,0 +1,19 @@
+# MatrixRoute - En Kısa Yol Bulma Projesi
+# Gereksinimler
+
+# Python versiyonu: Python 3.6 veya üzeri
+# Bu proje sadece Python standart kütüphanelerini kullanır
+
+# Kullanılan standart kütüphaneler:
+# - heapq (pathfinding için priority queue)
+# - typing (type hints için)
+# - random (interface dosyalarında örnek olarak)
+# - sys (encoding fix için)
+# - io (encoding fix için)
+
+# Ek paket gerekmez!
+# Eğer gelecekte matplotlib ile görselleştirme eklenirse:
+# matplotlib>=3.5.0
+
+# Eğer gelecekte pygame ile interaktif görsel eklenirse:
+# pygame>=2.1.0
