@@ -20,7 +20,9 @@ from pathfinder import PathFinder
 # Şimdilik interface dosyalarını kullan
 from obstacle_generator_interface import generate_obstacles
 from point_generator_interface import generate_start_end_points
-from visualizer_interface import visualize_path
+# from visualizer_interface import visualize_path
+from visualizer import Visualizer
+
 
 
 def main():
@@ -63,7 +65,17 @@ def main():
 
     # 4. Görselleştir (Ekip arkadaşınızın modülü)
     print("\n4. Görselleştirme yapılıyor...")
-    visualize_path(GRID_SIZE, obstacles, start, end, path)
+    viz = Visualizer()
+
+    # GRID oluşturulmalı (0 = boş, 1 = engel)
+    grid = [[0]*GRID_SIZE for _ in range(GRID_SIZE)]
+    for ox, oy in obstacles:
+        grid[oy][ox] = 1
+
+    print(">>> Viz sınıfı:", viz)
+    print(">>> Viz modülü:", viz.__class__.__module__)
+    viz.visualize(grid, start, end, path)
+
 
     print("\n" + "=" * 60)
     print("Program tamamlandı!")
