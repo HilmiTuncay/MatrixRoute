@@ -71,7 +71,7 @@ MatrixRoute/
 ├── pathfinder.py                    # ✅ Ana pathfinding algoritması (A*)
 ├── main.py                          # ✅ Tüm modülleri entegre eden ana dosya
 │
-├── obstacle_generator_interface .py            # ✅ Engel oluşturucu (pattern desteği ile)
+├── obstacle_generator_interface .py # ✅ Engel oluşturucu (pattern desteği ile)
 ├── point_generator_interface.py     # ✅ Nokta oluşturucu (minimum mesafe kontrolü)
 ├── visualizer.py                    # ✅ Matplotlib görselleştirme
 │

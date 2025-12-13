@@ -1,9 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(if exist requirements.txt type requirements.txt)"
-    ],
-    "deny": [],
-    "ask": []
-  }
-}
