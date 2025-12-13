@@ -60,6 +60,7 @@ def main():
     if path_info['success']:
         print(f"   ✓ Yol bulundu!")
         print(f"   ✓ Yol uzunluğu: {path_info['path_length']} adım")
+        print(f"   ✓ Yön değişimi: {path_info['direction_changes']} kez")
     else:
         print(f"   ✗ {path_info['message']}")
 

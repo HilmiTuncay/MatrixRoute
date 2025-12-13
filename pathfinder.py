@@ -57,17 +57,27 @@ class PathFinder:
         Returns:
             İki nokta arası Manhattan mesafesi
         """
-        return abs(pos1[0] - pos2[0]) + abs(pos1[1] - pos2[1])
+        dx = abs(pos1[0] - pos2[0])
+        dy = abs(pos1[1] - pos2[1])
+
+        # Standart Manhattan mesafesi
+        manhattan = dx + dy
+
+        # Tie-breaking: Hedefe daha direk giden yolu tercih et
+        # Çok küçük bir değer (0.001) ekliyoruz ki optimal yolu bozmayalım
+        tie_breaker = manhattan * 0.001
+        return manhattan + tie_breaker
 
     def _get_neighbors(self, pos: Tuple[int, int]) -> List[Tuple[int, int]]:
         """
         Bir noktanın komşu hücrelerini döndürür (yukarı, aşağı, sol, sağ)
+        Hedefe yakın olanları önceliklendirir (gereksiz manevralar azalır)
 
         Args:
             pos: Kontrol edilecek pozisyon
 
         Returns:
-            Geçerli komşu hücreler listesi
+            Geçerli komşu hücreler listesi (hedefe yakınlığa göre sıralı)
         """
         x, y = pos
         neighbors = []
@@ -82,9 +92,17 @@ class PathFinder:
             if (0 <= new_x < self.grid_size and
                 0 <= new_y < self.grid_size and
                 (new_x, new_y) not in self.obstacles):
-                neighbors.append((new_x, new_y))
 
-        return neighbors
+                # Hedefe olan mesafeyi hesapla (önceliklendirme için)
+                if self.end:
+                    dist_to_target = abs(new_x - self.end[0]) + abs(new_y - self.end[1])
+                    neighbors.append(((new_x, new_y), dist_to_target))
+                else:
+                    neighbors.append(((new_x, new_y), 0))
+
+        # Hedefe en yakın komşuları önce döndür
+        neighbors.sort(key=lambda x: x[1])
+        return [pos for pos, _ in neighbors]
 
     def find_path(self) -> Optional[List[Tuple[int, int]]]:
         """
@@ -181,15 +199,50 @@ class PathFinder:
                 "success": False,
                 "path_length": 0,
                 "path": None,
+                "direction_changes": 0,
                 "message": "Yol bulunamadı!"
             }
+
+        # Yön değişimlerini say
+        direction_changes = self._count_direction_changes(path)
 
         return {
             "success": True,
             "path_length": len(path),
             "path": path,
-            "message": f"Yol bulundu! Uzunluk: {len(path)} adım"
+            "direction_changes": direction_changes,
+            "message": f"Yol bulundu! Uzunluk: {len(path)} adım, Yön değişimi: {direction_changes}"
         }
+
+    def _count_direction_changes(self, path: List[Tuple[int, int]]) -> int:
+        """
+        Yoldaki yön değişimlerini sayar
+
+        Args:
+            path: Yol koordinatları
+
+        Returns:
+            Toplam yön değişimi sayısı
+        """
+        if len(path) < 2:
+            return 0
+
+        changes = 0
+        prev_direction = None
+
+        for i in range(1, len(path)):
+            # Mevcut yönü hesapla
+            dx = path[i][0] - path[i-1][0]
+            dy = path[i][1] - path[i-1][1]
+            current_direction = (dx, dy)
+
+            # Önceki yönle karşılaştır
+            if prev_direction is not None and prev_direction != current_direction:
+                changes += 1
+
+            prev_direction = current_direction
+
+        return changes
 
 
 # Ekip arkadaşlarınızın modüllerini entegre etmek için fonksiyonlar
