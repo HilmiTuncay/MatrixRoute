@@ -38,4 +38,7 @@ Thumbs.db
 # Project specific
 *.log
 test_output/
+
+# Claude Code
+.claude/
 .claude
